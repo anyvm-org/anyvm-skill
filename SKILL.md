@@ -6,7 +6,8 @@ argument-hint: 'anyvm freebsd, anyvm openbsd debug networking, anyvm start solar
 allowed-tools: Bash, Read, Write, Edit, WebSearch, WebFetch
 mcp-servers:
   - name: anyvm
-    command: anyvm-mcp
+    command: bash
+    args: ["-lc", "exec anyvm-mcp"]
     repository: https://github.com/anyvm-org/mcp
 homepage: https://github.com/anyvm-org/anyvm
 repository: https://github.com/anyvm-org/anyvm
@@ -60,6 +61,8 @@ brew install qemu
 # Linux (Debian/Ubuntu):
 sudo apt-get --no-install-recommends -y install qemu-system-x86 qemu-system-arm qemu-utils ovmf
 ```
+
+**IMPORTANT:** Do NOT try to install a standalone `anyvm` command via brew, pip, or npm — it does not exist as a standalone package. The only correct install method is `pipx install anyvm-mcp`. Do NOT attempt to use raw QEMU commands as a fallback — always use the MCP tools provided by this skill.
 
 ## MCP Tools Reference
 
