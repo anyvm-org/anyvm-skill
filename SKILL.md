@@ -53,8 +53,14 @@ When the anyvm MCP server is available, **prefer using MCP tools over CLI comman
 ### Installation
 
 ```bash
+# Recommended
+pipx install anyvm-mcp
+
+# Or via pip
 pip install anyvm-mcp
 ```
+
+Note: anyvm CLI is bundled automatically — no need to install it separately.
 
 ### Configuration
 
@@ -98,7 +104,8 @@ anyvm-mcp --transport sse --host 127.0.0.1 --port 8000
 | `destroy_vm` | Permanently remove a VM | `name` |
 | `exec_in_vm` | Execute a command inside a running VM | `name`, `command` |
 | `console_output` | Fetch serial/console logs | `name` |
-| `network_info` | Show VM network configuration | `name` |
+| `delete_snapshot` | Delete a snapshot | `name`, `snapshot_name` |
+| `network_info` | Show IP, MAC, NIC configuration | `name` |
 | `list_snapshots` | List all snapshots of a VM | `name` |
 | `create_snapshot` | Create a snapshot | `name`, `snapshot_name` |
 | `restore_snapshot` | Restore a VM to a snapshot | `name`, `snapshot_name` |
@@ -114,7 +121,7 @@ anyvm-mcp --transport sse --host 127.0.0.1 --port 8000
 ```
 anyvm-mcp [OPTIONS]
 
---anyvm PATH        Path to anyvm binary (default: auto-detect from PATH)
+--anyvm PATH        Path to anyvm binary (default: bundled)
 --transport TYPE    stdio (default), sse, or streamable-http
 --host HOST         HTTP bind address (default: 127.0.0.1)
 --port PORT         HTTP bind port (default: 8000)
@@ -319,4 +326,3 @@ python3 anyvm.py --os freebsd --snapshot -- "pkg install -y nginx && nginx -v"
 - Use `--snapshot` for disposable testing — it won't modify the base image
 - On macOS Apple Silicon, x86_64 VMs run via QEMU TCG (slower, no KVM) while aarch64 VMs use HVF acceleration
 - All guest images are built by CI in companion repos (e.g., anyvm-org/freebsd-builder) and published as GitHub Releases
-

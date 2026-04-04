@@ -32,7 +32,7 @@ This skill includes full support for the [anyvm MCP server](https://github.com/a
 | `network_info` | Show network configuration |
 | `list_snapshots` / `create_snapshot` / `restore_snapshot` / `delete_snapshot` | Snapshot management |
 
-Install: `pip install anyvm-mcp`
+Install: `pipx install anyvm-mcp` ([PyPI](https://pypi.org/project/anyvm-mcp/))
 
 When the MCP server is available, the AI assistant will prefer using structured MCP tools over raw CLI commands for better reliability. For advanced options (shared folders, VNC tunnels, custom port mappings), the assistant falls back to the `anyvm.py` CLI.
 
@@ -58,7 +58,7 @@ When the MCP server is available, the AI assistant will prefer using structured 
 git clone https://github.com/anyvm-org/anyvm-skill.git ~/.claude/skills/anyvm
 
 # (Optional) Install the MCP server for direct VM management
-pip install anyvm-mcp
+pipx install anyvm-mcp
 ```
 
 Then add the MCP server to `~/.claude/mcp.json`:
@@ -148,7 +148,7 @@ The skill itself has no dependencies. To actually run VMs, you need:
 - **[anyvm](https://github.com/anyvm-org/anyvm)** — single Python file, no pip install needed
 - **QEMU** — the VM hypervisor
 - **Python 3.10+** — to run anyvm.py and the MCP server
-- **[anyvm-mcp](https://github.com/anyvm-org/mcp)** (optional) — MCP server for AI-native VM management (`pip install anyvm-mcp`)
+- **[anyvm-mcp](https://github.com/anyvm-org/mcp)** (optional) — MCP server for AI-native VM management (`pipx install anyvm-mcp`, [PyPI](https://pypi.org/project/anyvm-mcp/)). Bundles anyvm CLI automatically.
 
 ## Examples
 
@@ -173,4 +173,3 @@ Issues and PRs welcome at [github.com/anyvm-org/anyvm-skill](https://github.com/
 ## License
 
 MIT
-
