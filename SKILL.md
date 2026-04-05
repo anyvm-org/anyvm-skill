@@ -54,18 +54,18 @@ Activate this skill when the user wants to:
 
 ## Installation
 
-anyvm is a single Python file with no pip dependencies. Only QEMU and standard system tools are required.
-
-### Check if anyvm is available
+> **CRITICAL: anyvm is a single Python file. Do NOT use `brew install`, `pip install`, `pipx`, or any package manager. Just `curl` the file.**
 
 ```bash
 # Check if anyvm.py exists locally
 ls anyvm.py 2>/dev/null || which anyvm 2>/dev/null
 
-# If not found, download it
-curl -fsSL https://raw.githubusercontent.com/anyvm-org/anyvm/main/anyvm.py -o anyvm.py
+# If not found, download the single file — this is the ONLY installation method
+curl -fsSL https://raw.githubusercontent.com/anyvm-org/anyvm/v0.3.2/anyvm.py -o anyvm.py
 chmod +x anyvm.py
 ```
+
+Only QEMU and standard system tools are required as dependencies (no pip packages).
 
 ### Install QEMU dependencies
 
