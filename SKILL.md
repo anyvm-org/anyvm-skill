@@ -114,17 +114,23 @@ python3 anyvm.py --os freebsd --mem 4096 --cpu 4
 
 ### Run commands inside VM
 
+**Start a VM and run an initial command:**
 ```bash
-# Run a single command
+# anyvm starts the VM, runs the command, but the VM keeps running in the background
 python3 anyvm.py --os freebsd -- uname -a
 
-# Run a build script
-python3 anyvm.py --os freebsd -- "cd /root && pkg install -y cmake && cmake --version"
-
-# Detach mode (background), then SSH manually
-python3 anyvm.py --os freebsd -d --ssh-port 10022
-ssh -p 10022 -o StrictHostKeyChecking=no root@localhost
+# Or start without an initial command
+python3 anyvm.py --os freebsd
 ```
+
+**After the VM is running, always use SSH directly for all subsequent commands:**
+```bash
+# Use the SSH port shown in anyvm output (default: 2222, or as assigned)
+ssh -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@localhost uname -a
+ssh -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@localhost "pkg install -y cmake && cmake --version"
+```
+
+> **Important:** The VM does NOT shut down after the initial command completes — it keeps running in the background. Once a VM is started, always use `ssh` directly for any further commands. Do NOT call `python3 anyvm.py --os ... -- command` again — that would try to start a new VM instance.
 
 ### Networking
 
