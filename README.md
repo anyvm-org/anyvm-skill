@@ -1,6 +1,6 @@
 # anyvm-skill
 
-AI agent skill for [anyvm](https://github.com/anyvm-org/anyvm) — run, manage, and debug BSD/Illumos VMs with natural language.
+AI agent skill for [anyvm](https://github.com/anyvm-org/anyvm) — run, manage, and debug BSD, Illumos, and Linux VMs with natural language.
 
 Works with [Claude Code](https://claude.com/claude-code), GitHub Copilot, and other AI coding assistants that support skill/instruction files.
 
@@ -10,6 +10,7 @@ This skill teaches your AI assistant how to use anyvm, so you can say things lik
 
 - "Start a FreeBSD 15.0 VM with 4GB RAM"
 - "Run my test suite on OpenBSD"
+- "Spin up an Ubuntu 24.04 VM and build my project"
 - "Debug why the VM can't connect to the network"
 - "Set up a Solaris VM with port 8080 forwarded"
 - "Share my project folder into a NetBSD VM"
@@ -21,13 +22,17 @@ The assistant will know the correct commands, flags, troubleshooting steps, and 
 | Guest OS | x86_64 | aarch64 | riscv64 |
 |---|---|---|---|
 | FreeBSD (12.4–15.0, desktop: xfce/gnome/kde6) | :white_check_mark: | :white_check_mark: | :white_check_mark: |
-| OpenBSD (7.3–7.6+) | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| OpenBSD (7.3–7.9, desktops: xfce/gnome/kde6/mate/lxqt/lumina/enlightenment) | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | NetBSD | :white_check_mark: | :white_check_mark: | |
 | DragonFlyBSD | :white_check_mark: | | |
+| MidnightBSD | :white_check_mark: | | |
+| GhostBSD (desktop: MATE/xfce/gershwin) | :white_check_mark: | | |
 | Solaris | :white_check_mark: | | |
 | OmniOS | :white_check_mark: | | |
 | OpenIndiana | :white_check_mark: | | |
+| Tribblix | :white_check_mark: | | |
 | Haiku | :white_check_mark: | | |
+| Ubuntu (e.g. 24.04) | :white_check_mark: | | |
 
 ## Installation
 
@@ -57,28 +62,36 @@ Copy the contents of `SKILL.md` into your assistant's system prompt or instructi
 
 ### VM Lifecycle
 - Starting VMs with any supported OS, version, and architecture
-- Running commands inside VMs via SSH
-- Detach/background mode
+- Desktop releases (FreeBSD/OpenBSD/GhostBSD graphical variants)
+- Running commands inside VMs via SSH (with auto-generated SSH aliases)
+- Detach/background and console/foreground modes
 - Snapshot mode for ephemeral testing
+- Local `--qcow2` images and pinned `--builder` versions
 
 ### Networking
-- SSH port forwarding
+- SSH port forwarding (auto-assigned host port) and named SSH aliases
 - Custom TCP/UDP port mapping
-- Public access binding
+- Public access binding (`--public`, `--public-ssh`, `--public-vnc`)
+- Network card model selection (`--nc`)
 - IPv6 configuration
 
 ### Shared Folders
 - Host-to-guest directory sharing
-- Multiple sync backends: rsync, sshfs, nfs, scp
+- Multiple sync backends: rsync, sshfs, nfs, scp (or off)
 
 ### Display & Console
 - Built-in VNC Web UI
 - Remote VNC tunnels (Cloudflare, Localhost.run, Pinggy, Serveo)
-- Serial console access
+- Serial console access and QEMU monitor exposure
 - Custom resolution and VGA settings
 
+### Acceleration & Boot
+- Automatic KVM/HVF/WHPX, or forced software emulation (`--tcg`)
+- Configurable boot timeouts (`--boot-timeout-sec`)
+- Optional host PMU passthrough (`--enable-pmu`)
+
 ### Troubleshooting
-- VM boot failures
+- VM boot failures and timeouts
 - SSH connection issues
 - Guest networking problems
 - Shared folder sync issues
