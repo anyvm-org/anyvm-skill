@@ -1,7 +1,7 @@
 ---
 name: anyvm
 version: "1.2.0"
-description: "Run, manage, and debug BSD, Illumos, Linux, and Android VMs with anyvm + QEMU. Supports FreeBSD, GhostBSD, MidnightBSD, OpenBSD, NetBSD, DragonFlyBSD, Solaris, OmniOS, OpenIndiana, Tribblix, Haiku, Ubuntu, and BlissOS across x86_64, aarch64, riscv64, sparc64, powerpc64, and s390x architectures."
+description: "Run, manage, debug, and test/build/run code inside BSD, Illumos, Linux, and Android VMs with anyvm + QEMU. Covers FreeBSD, GhostBSD, MidnightBSD, OpenBSD, NetBSD, DragonFlyBSD, Solaris, OmniOS, OpenIndiana, Tribblix, Haiku, Ubuntu, and BlissOS across x86_64, aarch64, riscv64, sparc64, powerpc64, and s390x. Use when the user is writing code that must compile, run, or be tested on one of these operating systems or CPU architectures, needs to reproduce a platform-specific bug, checks cross-platform or cross-architecture portability, or wants to start, SSH into, port-forward, or share folders with such a VM."
 argument-hint: 'anyvm freebsd, anyvm openbsd debug networking, anyvm start ubuntu vm'
 allowed-tools: Bash, Read, Write, Edit, WebSearch, WebFetch
 homepage: https://github.com/anyvm-org/anyvm
