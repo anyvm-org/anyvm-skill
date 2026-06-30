@@ -1,7 +1,7 @@
 ---
 name: anyvm
-version: "1.1.0"
-description: "Run, manage, and debug BSD, Illumos, and Linux VMs with anyvm + QEMU. Supports FreeBSD, GhostBSD, MidnightBSD, OpenBSD, NetBSD, DragonFlyBSD, Solaris, OmniOS, OpenIndiana, Tribblix, Haiku, and Ubuntu across x86_64, aarch64, and riscv64 architectures."
+version: "1.2.0"
+description: "Run, manage, and debug BSD, Illumos, Linux, and Android VMs with anyvm + QEMU. Supports FreeBSD, GhostBSD, MidnightBSD, OpenBSD, NetBSD, DragonFlyBSD, Solaris, OmniOS, OpenIndiana, Tribblix, Haiku, Ubuntu, and BlissOS across x86_64, aarch64, riscv64, sparc64, powerpc64, and s390x architectures."
 argument-hint: 'anyvm freebsd, anyvm openbsd debug networking, anyvm start ubuntu vm'
 allowed-tools: Bash, Read, Write, Edit, WebSearch, WebFetch
 homepage: https://github.com/anyvm-org/anyvm
@@ -25,6 +25,8 @@ metadata:
     - tribblix
     - haiku
     - ubuntu
+    - blissos
+    - android
     - bsd
     - illumos
     - linux
@@ -33,48 +35,52 @@ metadata:
 
 # anyvm Skill
 
-You are an expert at running and debugging BSD, Illumos, and Linux virtual machines using **anyvm** — a single-file Python tool that bootstraps guest VMs with QEMU on Linux, macOS, and Windows. It downloads pre-built cloud images, sets up firmware, configures SSH, and boots the guest with sane defaults.
+You are an expert at running and debugging BSD, Illumos, Linux, and Android (BlissOS) virtual machines using **anyvm** — a single-file Python tool that bootstraps guest VMs with QEMU on Linux, macOS, and Windows. It downloads pre-built cloud images, sets up firmware, configures SSH, and boots the guest with sane defaults.
 
 ## When to Activate
 
 Activate this skill when the user wants to:
-- Start, stop, or manage a BSD/Illumos/Linux/Haiku VM
+- Start, stop, or manage a BSD/Illumos/Linux/Haiku/Android VM
 - Debug issues inside a running VM (networking, packages, services)
 - Run commands inside a VM via SSH
 - Set up port forwarding, shared folders, or VNC access
 - Troubleshoot QEMU or VM boot issues
-- Build or test software in a BSD/Solaris/Linux environment
+- Build or test software across many OS / CPU-architecture combinations
 
 ## Supported Guest Operating Systems
 
-| Guest OS | x86_64 | aarch64 | riscv64 |
-|---|---|---|---|
-| FreeBSD (12.4–15.0, desktop: -xfce/-gnome/-kde6) | Yes | Yes | Yes |
-| OpenBSD (7.3–7.9, desktop: -xfce/-gnome/-kde6/-mate/-lxqt/-lumina/-enlightenment) | Yes | Yes | Yes |
-| NetBSD | Yes | Yes | No |
-| DragonFlyBSD | Yes | No | No |
-| MidnightBSD | Yes | No | No |
-| GhostBSD (FreeBSD-based desktop: MATE default, -xfce, -gershwin) | Yes | No | No |
-| Solaris | Yes | No | No |
-| OmniOS | Yes | No | No |
-| OpenIndiana | Yes | No | No |
-| Tribblix | Yes | No | No |
-| Haiku | Yes | No | No |
-| Ubuntu (e.g. 24.04) | Yes | No | No |
+Architecture columns: x86_64 / aarch64 / riscv64 / powerpc64 / sparc64 / s390x.
 
-> The `--os` value is one of: `freebsd`, `ghostbsd`, `midnightbsd`, `openbsd`, `netbsd`, `dragonflybsd`, `solaris`, `omnios`, `openindiana`, `tribblix`, `haiku`, `ubuntu`.
+| Guest OS | x86_64 | aarch64 | riscv64 | ppc64 | sparc64 | s390x |
+|---|---|---|---|---|---|---|
+| FreeBSD (12.4–15.0, desktop: -xfce/-gnome/-kde6) | Yes | Yes | Yes | Yes | — | — |
+| OpenBSD (7.3–7.9, desktop: -xfce/-gnome/-kde6/-mate/-lxqt/-lumina/-enlightenment) | Yes | Yes | Yes | — | Yes | — |
+| NetBSD | Yes | Yes | Yes | — | Yes | — |
+| DragonFlyBSD | Yes | — | — | — | — | — |
+| MidnightBSD | Yes | — | — | — | — | — |
+| GhostBSD (FreeBSD-based desktop: MATE default, -xfce, -gershwin) | Yes | — | — | — | — | — |
+| Solaris | Yes | — | — | — | — | — |
+| OmniOS | Yes | — | — | — | — | — |
+| OpenIndiana | Yes | — | — | — | — | — |
+| Tribblix | Yes | — | — | — | — | — |
+| Haiku | Yes | — | — | — | — | — |
+| Ubuntu (e.g. 24.04) | Yes | Yes | Yes | Yes | — | Yes |
+| BlissOS (Android-x86; 14/15/16 = Android 11/12L/13) | Yes | — | — | — | — | — |
+
+> The `--os` value is one of: `freebsd`, `ghostbsd`, `midnightbsd`, `openbsd`, `netbsd`, `dragonflybsd`, `solaris`, `omnios`, `openindiana`, `tribblix`, `haiku`, `ubuntu`, `blissos`.
 
 ## Host Support
 
-| Host | x86_64 guests | aarch64 guests | riscv64 guests |
-|---|---|---|---|
-| Linux x86_64 | Yes | Yes | Yes |
-| Linux aarch64 (arm64) | No | Yes | No |
-| macOS Apple Silicon | Yes (TCG) | Yes (HVF) | No |
-| Windows x86_64 native | Yes | No | No |
-| Windows x86_64 WSL | Yes | Yes | Yes |
+Hardware acceleration (KVM on Linux, HVF on macOS, WHPX/Hyper-V on Windows) is applied automatically when available; everything else runs under TCG software emulation (slow).
 
-Hardware acceleration (KVM on Linux, HVF on macOS, WHPX/Hyper-V on Windows) is applied automatically when available.
+| Host | x86_64 | aarch64 | riscv64 | s390x | ppc64 | sparc64 |
+|---|---|---|---|---|---|---|
+| Linux x86_64 | Yes | Yes | Yes | Yes | Yes | Yes |
+| Linux aarch64 (arm64) | — | Yes | — | — | — | — |
+| Linux s390x (IBM Z) | — | — | — | Yes (KVM) | — | — |
+| macOS Apple Silicon | Yes (TCG) | Yes (HVF) | — | — | — | — |
+| Windows x86_64 native | Yes | — | — | — | — | — |
+| Windows x86_64 WSL | Yes | Yes | Yes | Yes | Yes | Yes |
 
 ## Installation
 
@@ -85,7 +91,7 @@ Hardware acceleration (KVM on Linux, HVF on macOS, WHPX/Hyper-V on Windows) is a
 ls anyvm.py 2>/dev/null || which anyvm 2>/dev/null
 
 # If not found, download the single file — this is the ONLY installation method
-curl -fsSL https://raw.githubusercontent.com/anyvm-org/anyvm/v0.3.9/anyvm.py -o anyvm.py
+curl -fsSL https://raw.githubusercontent.com/anyvm-org/anyvm/v0.4.5/anyvm.py -o anyvm.py
 chmod +x anyvm.py
 ```
 
@@ -98,9 +104,11 @@ Only QEMU and standard system tools are required as dependencies (no pip package
 sudo apt-get --no-install-recommends -y install \
   zstd ovmf xz-utils qemu-utils ca-certificates \
   qemu-system-x86 qemu-system-arm qemu-efi-aarch64 \
-  qemu-efi-riscv64 qemu-system-riscv64 u-boot-qemu \
+  qemu-efi-riscv64 qemu-system-riscv64 qemu-system-misc u-boot-qemu \
+  qemu-system-ppc qemu-system-s390x qemu-system-sparc \
   openssh-client
 ```
+(Drop the non-x86 packages if you only need x86_64 guests.)
 
 **macOS:**
 ```bash
@@ -132,8 +140,15 @@ python3 anyvm.py --os freebsd
 python3 anyvm.py --os freebsd --release 14.3 --arch aarch64
 python3 anyvm.py --os freebsd --release 14.3 --arch riscv64
 
-# OpenBSD
+# OpenBSD (incl. sparc64)
 python3 anyvm.py --os openbsd --release 7.5 --arch aarch64
+python3 anyvm.py --os openbsd --arch sparc64
+
+# Ubuntu across architectures (powerpc64 / s390x as well)
+python3 anyvm.py --os ubuntu
+python3 anyvm.py --os ubuntu --release 24.04
+python3 anyvm.py --os ubuntu --arch s390x
+python3 anyvm.py --os ubuntu --arch powerpc64
 
 # Illumos family
 python3 anyvm.py --os solaris
@@ -141,12 +156,13 @@ python3 anyvm.py --os omnios
 python3 anyvm.py --os openindiana
 python3 anyvm.py --os tribblix
 
-# Ubuntu Linux
-python3 anyvm.py --os ubuntu
-python3 anyvm.py --os ubuntu --release 24.04
-
 # GhostBSD (FreeBSD-based desktop)
 python3 anyvm.py --os ghostbsd
+
+# BlissOS (Android-x86): root ssh + the Android desktop on the VNC console
+python3 anyvm.py --os blissos                 # latest (16, Android 13)
+python3 anyvm.py --os blissos --release 15    # Android 12L
+python3 anyvm.py --os blissos --release 14    # Android 11
 
 # Custom resources
 python3 anyvm.py --os freebsd --mem 4096 --cpu 4
@@ -156,6 +172,7 @@ python3 anyvm.py --os openbsd --arch aarch64 --cpu-type cortex-a72
 ```
 
 If `--release` is omitted, anyvm auto-selects an available release for that OS.
+`--arch` accepts: `x86_64` (default = host), `aarch64`, `riscv64`, `sparc64`, `powerpc64`, `s390x` (only the combinations marked Yes in the table above are built).
 
 ### Desktop releases (graphical, view via VNC Web UI)
 
@@ -178,6 +195,9 @@ python3 anyvm.py --os openbsd --release 7.9-enlightenment
 python3 anyvm.py --os ghostbsd
 python3 anyvm.py --os ghostbsd --release 26.1-xfce
 python3 anyvm.py --os ghostbsd --release 26.1-gershwin
+
+# BlissOS exposes the Android home screen itself over the VNC Web UI
+python3 anyvm.py --os blissos
 ```
 
 ### Run commands inside VM
@@ -243,6 +263,7 @@ python3 anyvm.py --os freebsd -v /home/user/project:/root/project
 python3 anyvm.py --os freebsd -v /src:/root/src --sync sshfs
 # Sync modes: rsync (default), sshfs, nfs, scp, no/off (disable sync)
 # Note: sshfs/nfs are not supported on Windows hosts; rsync needs rsync.exe.
+# BlissOS (Android) supports scp only — anyvm defaults its sync to scp.
 ```
 
 ### Display and Console
@@ -293,7 +314,7 @@ python3 anyvm.py --os freebsd --snapshot -- "pkg install -y nginx && nginx -v"
 python3 anyvm.py --os freebsd --qcow2 ./output/freebsd/freebsd-14.3.qcow2
 
 # Pin a specific builder version (selects matching cloud images)
-python3 anyvm.py --os netbsd --builder 2.0.1
+python3 anyvm.py --os netbsd --builder 2.1.4
 ```
 
 ### Acceleration control
@@ -312,12 +333,12 @@ python3 anyvm.py --os ubuntu --enable-pmu -- perf stat ls
 ## Debugging Guide
 
 ### VM won't start
-1. Check QEMU is installed: `qemu-system-x86_64 --version`
+1. Check QEMU is installed for the target arch: `qemu-system-x86_64 --version` (or `-aarch64`, `-riscv64`, `-s390x`, `-ppc64`, `-sparc64`)
 2. Check KVM is available: `ls /dev/kvm` (Linux)
 3. Run with `--debug` for verbose output: `python3 anyvm.py --os freebsd --debug`
 4. Check disk space — images are ~1-3GB each
 5. If it boots but times out, raise the boot timeout: `--boot-timeout-sec 1800`
-   (default 600s; OpenBSD/aarch64 defaults to 1200s; TCG mode defaults to 1800s)
+   (default is 600s; emulated/non-native arches and heavy guests like Solaris or DragonFlyBSD under TCG often need more)
 6. If acceleration is flaky, force software emulation with `--tcg`
 
 ### SSH connection fails
@@ -335,7 +356,7 @@ python3 anyvm.py --os ubuntu --enable-pmu -- perf stat ls
 
 ### Shared folder not syncing
 1. Check sync mode compatibility with the guest OS
-2. rsync is the most reliable default across all platforms
+2. rsync is the most reliable default across BSD/Illumos/Linux; BlissOS only supports scp
 3. sshfs requires FUSE support in the guest; sshfs/nfs are unavailable on Windows hosts
 4. Try `--sync scp` as a fallback, or `--sync no` to disable sync
 
@@ -350,7 +371,7 @@ python3 anyvm.py --os ubuntu --enable-pmu -- perf stat ls
 2. Increase CPUs: `--cpu 8`
 3. Ensure KVM/HVF/WHPX acceleration is active (check `--debug` output for "accel" lines)
 4. Use `--disktype virtio` (default; `ide` for DragonFlyBSD)
-5. Emulated arches (aarch64/riscv64 on x86 hosts) run under TCG and are inherently slow
+5. Non-native arches (e.g. aarch64/riscv64/s390x/ppc64/sparc64 on an x86 host) run under TCG and are inherently slow
 
 ## Key File Locations
 
@@ -368,5 +389,6 @@ python3 anyvm.py --os ubuntu --enable-pmu -- perf stat ls
 - The VNC Web UI is a built-in feature — no extra software needed
 - Use `--snapshot` for disposable testing — it won't modify the base image
 - On macOS Apple Silicon, x86_64 VMs run via QEMU TCG (slower, no KVM) while aarch64 VMs use HVF
+- On nested AMD KVM hosts (e.g. KVM inside WSL2 / Hyper-V), anyvm automatically drops AVX512 from `-cpu host` (nested AMD-V corrupts AVX512 state and makes modern guests like Ubuntu 26.04+ randomly segfault); override with `--cpu-type` if needed
 - All guest images are built by CI in companion repos (e.g., anyvm-org/freebsd-builder) and published as GitHub Releases
 - Builder/release fetching honors `GITHUB_TOKEN` / `GH_TOKEN` if set (avoids API rate limits)
