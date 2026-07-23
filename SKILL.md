@@ -1,7 +1,7 @@
 ---
 name: anyvm
-version: "1.3.0"
-description: "Run, manage, debug, and test/build/run code inside BSD, Illumos, Linux, Android, GNU Hurd, and Plan 9 VMs with anyvm + QEMU. Covers FreeBSD, GhostBSD, MidnightBSD, OpenBSD, NetBSD, DragonFlyBSD, Solaris, OmniOS, OpenIndiana, Tribblix, Haiku, Ubuntu, BlissOS, GNU Hurd, and Plan 9 (9front) across x86_64, aarch64, riscv64, sparc64, powerpc64, and s390x. Use when the user is writing code that must compile, run, or be tested on one of these operating systems or CPU architectures, needs to reproduce a platform-specific bug, checks cross-platform or cross-architecture portability, or wants to start, SSH into, port-forward, or share folders with such a VM."
+version: "1.4.0"
+description: "Run, manage, debug, and test/build/run code inside BSD, Illumos, Linux, Android, GNU Hurd, and Plan 9 VMs with anyvm + QEMU. Covers FreeBSD, GhostBSD, MidnightBSD, OpenBSD, NetBSD, DragonFlyBSD, Solaris, OmniOS, OpenIndiana, Tribblix, Haiku, Ubuntu, openEuler, BlissOS, GNU Hurd, and Plan 9 (9front) across x86_64, aarch64, riscv64, sparc64, powerpc64, s390x, and loongarch64. Use when the user is writing code that must compile, run, or be tested on one of these operating systems or CPU architectures, needs to reproduce a platform-specific bug, checks cross-platform or cross-architecture portability, or wants to start, SSH into, port-forward, or share folders with such a VM."
 argument-hint: 'anyvm freebsd, anyvm openbsd debug networking, anyvm start ubuntu vm'
 allowed-tools: Bash, Read, Write, Edit, WebSearch, WebFetch
 homepage: https://github.com/anyvm-org/anyvm
@@ -25,6 +25,8 @@ metadata:
     - tribblix
     - haiku
     - ubuntu
+    - openeuler
+    - loongarch64
     - blissos
     - android
     - hurd
@@ -51,46 +53,48 @@ Activate this skill when the user wants to:
 
 ## Supported Guest Operating Systems
 
-Architecture columns: x86_64 / aarch64 / riscv64 / powerpc64 / sparc64 / s390x.
+Architecture columns: x86_64 / aarch64 / riscv64 / powerpc64 / sparc64 / s390x / loongarch64.
 
-| Guest OS | x86_64 | aarch64 | riscv64 | ppc64 | sparc64 | s390x |
-|---|---|---|---|---|---|---|
-| FreeBSD (12.4–15.0, desktop: -xfce/-gnome/-kde6) | Yes | Yes | Yes | Yes | — | — |
-| OpenBSD (7.3–7.9, desktop: -xfce/-gnome/-kde6/-mate/-lxqt/-lumina/-enlightenment) | Yes | Yes | Yes | — | Yes | — |
-| NetBSD | Yes | Yes | Yes | — | Yes | — |
-| DragonFlyBSD | Yes | — | — | — | — | — |
-| MidnightBSD | Yes | — | — | — | — | — |
-| GhostBSD (FreeBSD-based desktop: MATE default, -xfce, -gershwin) | Yes | — | — | — | — | — |
-| Solaris | Yes | — | — | — | — | — |
-| OmniOS | Yes | — | — | — | — | — |
-| OpenIndiana | Yes | — | — | — | — | — |
-| Tribblix | Yes | — | — | — | — | — |
-| Haiku | Yes | — | — | — | — | — |
-| Ubuntu (e.g. 24.04) | Yes | Yes | Yes | Yes | — | Yes |
-| BlissOS (Android-x86; 14/15/16 = Android 11/12L/13) | Yes | — | — | — | — | — |
-| GNU Hurd (Debian; also 32-bit i386 via `--arch i386`) | Yes | — | — | — | — | — |
-| Plan 9 (9front; telnet console + 9P sync, not SSH) | Yes | — | — | — | — | — |
+| Guest OS | x86_64 | aarch64 | riscv64 | ppc64 | sparc64 | s390x | loongarch64 |
+|---|---|---|---|---|---|---|---|
+| FreeBSD (12.4–15.0, desktop: -xfce/-gnome/-kde6) | Yes | Yes | Yes | Yes | — | — | — |
+| OpenBSD (7.3–7.9, desktop: -xfce/-gnome/-kde6/-mate/-lxqt/-lumina/-enlightenment) | Yes | Yes | Yes | — | Yes | — | — |
+| NetBSD | Yes | Yes | Yes | — | Yes | — | — |
+| DragonFlyBSD | Yes | — | — | — | — | — | — |
+| MidnightBSD | Yes | — | — | — | — | — | — |
+| GhostBSD (FreeBSD-based desktop: MATE default, -xfce, -gershwin) | Yes | — | — | — | — | — | — |
+| Solaris | Yes | — | — | — | — | — | — |
+| OmniOS | Yes | — | — | — | — | — | — |
+| OpenIndiana | Yes | — | — | — | — | — | — |
+| Tribblix | Yes | — | — | — | — | — | — |
+| Haiku | Yes | — | — | — | — | — | — |
+| Ubuntu (e.g. 24.04) | Yes | Yes | Yes | Yes | — | Yes | — |
+| openEuler (22.03-LTS-SP4 / 24.03-LTS-SP4 / 25.09) | Yes | Yes | Yes (25.09 only) | — | — | — | Yes (24.03-LTS-SP4 only) |
+| BlissOS (Android-x86; 14/15/16 = Android 11/12L/13) | Yes | — | — | — | — | — | — |
+| GNU Hurd (Debian; also 32-bit i386 via `--arch i386`) | Yes | — | — | — | — | — | — |
+| Plan 9 (9front; telnet console + 9P sync, not SSH) | Yes | — | — | — | — | — | — |
 
-> The `--os` value is one of: `freebsd`, `ghostbsd`, `midnightbsd`, `openbsd`, `netbsd`, `dragonflybsd`, `solaris`, `omnios`, `openindiana`, `tribblix`, `haiku`, `ubuntu`, `blissos`, `hurd`, `plan9`.
+> The `--os` value is one of: `freebsd`, `ghostbsd`, `midnightbsd`, `openbsd`, `netbsd`, `dragonflybsd`, `solaris`, `omnios`, `openindiana`, `tribblix`, `haiku`, `ubuntu`, `openeuler`, `blissos`, `hurd`, `plan9`.
 
 ### Special guests (read before using)
 
 - **Plan 9 (9front)** has **no SSH**. anyvm talks to it over a telnet console and syncs `-v` folders over **9P** automatically. Starting it drops you into an interactive telnet session (press `Ctrl-]` to detach and leave the VM running). The SSH aliases, `ssh <port>` reconnect, `-- cmd` (goes to ssh), and `--sync rsync/scp/sshfs/nfs` guidance below do **not** apply to `plan9`.
 - **GNU Hurd (Debian)** runs x86_64 or 32-bit `--arch i386`. Folder sync works with `rsync`, `scp`, or `nfs`, but **not `sshfs`** (Hurd has no FUSE).
 - **BlissOS (Android)** supports `scp` sync only; anyvm defaults its `--sync` to `scp`. You get root SSH plus the Android home screen on the VNC Web UI.
+- **openEuler** release names follow upstream in full (`22.03-LTS-SP4`, `24.03-LTS-SP4`, `25.09`). The `riscv64` port (25.09 only) has **no sshfs package** — use `rsync`/`scp`/`nfs` there. The `loongarch64` guest (24.03-LTS-SP4 only) needs QEMU >= 9.2 for the bundled EDK2 LoongArch firmware; on Linux x86_64 hosts with an older QEMU (e.g. Ubuntu 24.04's 8.2), anyvm automatically downloads a pinned QEMU 10.2.3 from the openeuler-builder release assets — no manual setup.
 
 ## Host Support
 
 Hardware acceleration (KVM on Linux, HVF on macOS, WHPX/Hyper-V on Windows) is applied automatically when available (WHPX is auto-enabled on Windows when present); everything else runs under TCG software emulation (slow).
 
-| Host | x86_64 | aarch64 | riscv64 | s390x | ppc64 | sparc64 |
-|---|---|---|---|---|---|---|
-| Linux x86_64 | Yes | Yes | Yes | Yes | Yes | Yes |
-| Linux aarch64 (arm64) | — | Yes | — | — | — | — |
-| Linux s390x (IBM Z) | — | — | — | Yes (KVM) | — | — |
-| macOS Apple Silicon | Yes (TCG) | Yes (HVF) | — | — | — | — |
-| Windows x86_64 native | Yes | — | — | — | — | — |
-| Windows x86_64 WSL | Yes | Yes | Yes | Yes | Yes | Yes |
+| Host | x86_64 | aarch64 | riscv64 | s390x | ppc64 | sparc64 | loongarch64 |
+|---|---|---|---|---|---|---|---|
+| Linux x86_64 | Yes | Yes | Yes | Yes | Yes | Yes | Yes |
+| Linux aarch64 (arm64) | — | Yes | — | — | — | — | — |
+| Linux s390x (IBM Z) | — | — | — | Yes (KVM) | — | — | — |
+| macOS Apple Silicon | Yes (TCG) | Yes (HVF) | — | — | — | — | — |
+| Windows x86_64 native | Yes | — | — | — | — | — | — |
+| Windows x86_64 WSL | Yes | Yes | Yes | Yes | Yes | Yes | Yes |
 
 ## Installation
 
@@ -160,6 +164,13 @@ python3 anyvm.py --os ubuntu --release 24.04
 python3 anyvm.py --os ubuntu --arch s390x
 python3 anyvm.py --os ubuntu --arch powerpc64
 
+# openEuler (release names follow upstream in full)
+python3 anyvm.py --os openeuler                                  # auto-selects 25.09
+python3 anyvm.py --os openeuler --release 24.03-LTS-SP4
+python3 anyvm.py --os openeuler --release 24.03-LTS-SP4 --arch aarch64
+python3 anyvm.py --os openeuler --release 25.09 --arch riscv64
+python3 anyvm.py --os openeuler --release 24.03-LTS-SP4 --arch loongarch64
+
 # Illumos family
 python3 anyvm.py --os solaris
 python3 anyvm.py --os omnios
@@ -189,7 +200,7 @@ python3 anyvm.py --os openbsd --arch aarch64 --cpu-type cortex-a72
 ```
 
 If `--release` is omitted, anyvm auto-selects an available release for that OS.
-`--arch` accepts: `x86_64` (default = host), `aarch64`, `riscv64`, `sparc64`, `powerpc64`, `s390x` (plus `i386` for GNU Hurd). Only the combinations marked Yes in the table above are built.
+`--arch` accepts: `x86_64` (default = host), `aarch64`, `riscv64`, `sparc64`, `powerpc64`, `s390x`, `loongarch64` (plus `i386` for GNU Hurd). Only the combinations marked Yes in the table above are built.
 
 Resource defaults: `--mem` is 4096 MB when the host has more than 4 GB RAM (else 2048); `--cpu` is the host core count capped at 8 with hardware acceleration, or 2 under TCG. Pass explicit values to override.
 
@@ -288,7 +299,7 @@ Sync modes (`--sync`): `rsync` (default), `sshfs`, `nfs`, `sys-nfs`, `scp`, `no`
 - `nfs` runs anyvm's **bundled user-space NFS server** (anyvm-org/nfsd, v3/v4 + portmapper) on the host — no kernel nfsd, no root, and it works on Linux, macOS, and Windows hosts (`mynfs` is an accepted alias).
 - On **Linux**, the v3-only guests (`openbsd`, `netbsd`, `dragonflybsd`) need portmapper port 111, which the system `rpcbind` usually owns — use `--sync sys-nfs` for them there. `sys-nfs` uses the host kernel NFS server (needs root/sudo; not available on macOS/Windows).
 - `sshfs` needs FUSE in the guest and is **not supported on Windows hosts**; `rsync` needs `rsync.exe` on Windows.
-- Guest-specific: **Plan 9** ignores `--sync` and shares `-v` folders over 9P automatically; **GNU Hurd** supports rsync/scp/nfs but not sshfs; **BlissOS** supports scp only (and defaults to it).
+- Guest-specific: **Plan 9** ignores `--sync` and shares `-v` folders over 9P automatically; **GNU Hurd** supports rsync/scp/nfs but not sshfs; **BlissOS** supports scp only (and defaults to it); **openEuler riscv64** has no sshfs package — use rsync/scp/nfs.
 
 ### Display and Console
 
@@ -357,7 +368,7 @@ python3 anyvm.py --os ubuntu --enable-pmu -- perf stat ls
 ## Debugging Guide
 
 ### VM won't start
-1. Check QEMU is installed for the target arch: `qemu-system-x86_64 --version` (or `-aarch64`, `-riscv64`, `-s390x`, `-ppc64`, `-sparc64`)
+1. Check QEMU is installed for the target arch: `qemu-system-x86_64 --version` (or `-aarch64`, `-riscv64`, `-s390x`, `-ppc64`, `-sparc64`, `-loongarch64`)
 2. Check KVM is available: `ls /dev/kvm` (Linux)
 3. Run with `--debug` for verbose output: `python3 anyvm.py --os freebsd --debug`
 4. Check disk space — images are ~1-3GB each
@@ -396,7 +407,7 @@ python3 anyvm.py --os ubuntu --enable-pmu -- perf stat ls
 2. Increase CPUs: `--cpu 8` (default caps at 8 with acceleration, 2 under TCG)
 3. Ensure KVM/HVF/WHPX acceleration is active (check `--debug` output for "accel" lines)
 4. Use `--disktype virtio` (default; `ide` for DragonFlyBSD)
-5. Non-native arches (e.g. aarch64/riscv64/s390x/ppc64/sparc64 on an x86 host) run under TCG and are inherently slow
+5. Non-native arches (e.g. aarch64/riscv64/s390x/ppc64/sparc64/loongarch64 on an x86 host) run under TCG and are inherently slow
 
 ## Key File Locations
 

@@ -12,6 +12,7 @@ This skill teaches your AI assistant how to use anyvm, so you can say things lik
 - "Run my test suite on OpenBSD"
 - "Spin up an Ubuntu 24.04 VM and build my project"
 - "Test my code on Ubuntu s390x and powerpc64"
+- "Run my tests on openEuler loongarch64"
 - "Boot a BlissOS (Android) VM and show me the desktop"
 - "Spin up a GNU Hurd or Plan 9 VM to try it out"
 - "Debug why the VM can't connect to the network"
@@ -22,25 +23,26 @@ The assistant will know the correct commands, flags, troubleshooting steps, and 
 
 ## Supported VMs
 
-Architecture columns: x86_64 / aarch64 / riscv64 / powerpc64 / sparc64 / s390x.
+Architecture columns: x86_64 / aarch64 / riscv64 / powerpc64 / sparc64 / s390x / loongarch64.
 
-| Guest OS | x86_64 | aarch64 | riscv64 | ppc64 | sparc64 | s390x |
-|---|---|---|---|---|---|---|
-| FreeBSD (12.4–15.0, desktop: xfce/gnome/kde6) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | | |
-| OpenBSD (7.3–7.9, desktops: xfce/gnome/kde6/mate/lxqt/lumina/enlightenment) | :white_check_mark: | :white_check_mark: | :white_check_mark: | | :white_check_mark: | |
-| NetBSD | :white_check_mark: | :white_check_mark: | :white_check_mark: | | :white_check_mark: | |
-| DragonFlyBSD | :white_check_mark: | | | | | |
-| MidnightBSD | :white_check_mark: | | | | | |
-| GhostBSD (desktop: MATE/xfce/gershwin) | :white_check_mark: | | | | | |
-| Solaris | :white_check_mark: | | | | | |
-| OmniOS | :white_check_mark: | | | | | |
-| OpenIndiana | :white_check_mark: | | | | | |
-| Tribblix | :white_check_mark: | | | | | |
-| Haiku | :white_check_mark: | | | | | |
-| Ubuntu (e.g. 24.04) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | | :white_check_mark: |
-| BlissOS (Android-x86; 14/15/16 = Android 11/12L/13) | :white_check_mark: | | | | | |
-| GNU Hurd (Debian; also 32-bit i386) | :white_check_mark: | | | | | |
-| Plan 9 (9front; telnet + 9P, not SSH) | :white_check_mark: | | | | | |
+| Guest OS | x86_64 | aarch64 | riscv64 | ppc64 | sparc64 | s390x | loongarch64 |
+|---|---|---|---|---|---|---|---|
+| FreeBSD (12.4–15.0, desktop: xfce/gnome/kde6) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | | | |
+| OpenBSD (7.3–7.9, desktops: xfce/gnome/kde6/mate/lxqt/lumina/enlightenment) | :white_check_mark: | :white_check_mark: | :white_check_mark: | | :white_check_mark: | | |
+| NetBSD | :white_check_mark: | :white_check_mark: | :white_check_mark: | | :white_check_mark: | | |
+| DragonFlyBSD | :white_check_mark: | | | | | | |
+| MidnightBSD | :white_check_mark: | | | | | | |
+| GhostBSD (desktop: MATE/xfce/gershwin) | :white_check_mark: | | | | | | |
+| Solaris | :white_check_mark: | | | | | | |
+| OmniOS | :white_check_mark: | | | | | | |
+| OpenIndiana | :white_check_mark: | | | | | | |
+| Tribblix | :white_check_mark: | | | | | | |
+| Haiku | :white_check_mark: | | | | | | |
+| Ubuntu (e.g. 24.04) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | | :white_check_mark: | |
+| openEuler (22.03-LTS-SP4 / 24.03-LTS-SP4 / 25.09) | :white_check_mark: | :white_check_mark: | :white_check_mark: | | | | :white_check_mark: |
+| BlissOS (Android-x86; 14/15/16 = Android 11/12L/13) | :white_check_mark: | | | | | | |
+| GNU Hurd (Debian; also 32-bit i386) | :white_check_mark: | | | | | | |
+| Plan 9 (9front; telnet + 9P, not SSH) | :white_check_mark: | | | | | | |
 
 ## Installation
 
@@ -69,7 +71,7 @@ Copy the contents of `SKILL.md` into your assistant's system prompt or instructi
 ## What the skill covers
 
 ### VM Lifecycle
-- Starting VMs with any supported OS, version, and architecture (x86_64, aarch64, riscv64, powerpc64, sparc64, s390x)
+- Starting VMs with any supported OS, version, and architecture (x86_64, aarch64, riscv64, powerpc64, sparc64, s390x, loongarch64)
 - Desktop releases (FreeBSD/OpenBSD/GhostBSD graphical variants) and the BlissOS Android desktop
 - Running commands inside VMs via SSH (with auto-generated SSH aliases); Plan 9 uses a telnet console instead
 - Detach/background and console/foreground modes
