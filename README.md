@@ -1,6 +1,6 @@
 # anyvm-skill
 
-AI agent skill for [anyvm](https://github.com/anyvm-org/anyvm) — run, manage, and debug BSD, Illumos, Linux, and Android VMs with natural language.
+AI agent skill for [anyvm](https://github.com/anyvm-org/anyvm) — run, manage, and debug BSD, Illumos, Linux, Android, GNU Hurd, and Plan 9 VMs with natural language.
 
 Works with [Claude Code](https://claude.com/claude-code), GitHub Copilot, and other AI coding assistants that support skill/instruction files.
 
@@ -13,6 +13,7 @@ This skill teaches your AI assistant how to use anyvm, so you can say things lik
 - "Spin up an Ubuntu 24.04 VM and build my project"
 - "Test my code on Ubuntu s390x and powerpc64"
 - "Boot a BlissOS (Android) VM and show me the desktop"
+- "Spin up a GNU Hurd or Plan 9 VM to try it out"
 - "Debug why the VM can't connect to the network"
 - "Set up a Solaris VM with port 8080 forwarded"
 - "Share my project folder into a NetBSD VM"
@@ -38,6 +39,8 @@ Architecture columns: x86_64 / aarch64 / riscv64 / powerpc64 / sparc64 / s390x.
 | Haiku | :white_check_mark: | | | | | |
 | Ubuntu (e.g. 24.04) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | | :white_check_mark: |
 | BlissOS (Android-x86; 14/15/16 = Android 11/12L/13) | :white_check_mark: | | | | | |
+| GNU Hurd (Debian; also 32-bit i386) | :white_check_mark: | | | | | |
+| Plan 9 (9front; telnet + 9P, not SSH) | :white_check_mark: | | | | | |
 
 ## Installation
 
@@ -68,7 +71,7 @@ Copy the contents of `SKILL.md` into your assistant's system prompt or instructi
 ### VM Lifecycle
 - Starting VMs with any supported OS, version, and architecture (x86_64, aarch64, riscv64, powerpc64, sparc64, s390x)
 - Desktop releases (FreeBSD/OpenBSD/GhostBSD graphical variants) and the BlissOS Android desktop
-- Running commands inside VMs via SSH (with auto-generated SSH aliases)
+- Running commands inside VMs via SSH (with auto-generated SSH aliases); Plan 9 uses a telnet console instead
 - Detach/background and console/foreground modes
 - Snapshot mode for ephemeral testing
 - Local `--qcow2` images and pinned `--builder` versions
@@ -82,7 +85,8 @@ Copy the contents of `SKILL.md` into your assistant's system prompt or instructi
 
 ### Shared Folders
 - Host-to-guest directory sharing
-- Multiple sync backends: rsync, sshfs, nfs, scp (or off)
+- Multiple sync backends: rsync, sshfs, nfs (bundled user-space server), sys-nfs, scp (or off)
+- Guest-aware defaults (BlissOS = scp, Plan 9 = 9P, Hurd = no sshfs)
 
 ### Display & Console
 - Built-in VNC Web UI
