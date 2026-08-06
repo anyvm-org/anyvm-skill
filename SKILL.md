@@ -105,9 +105,13 @@ Hardware acceleration (KVM on Linux, HVF on macOS, WHPX/Hyper-V on Windows) is a
 ls anyvm.py 2>/dev/null || which anyvm 2>/dev/null
 
 # If not found, download the single file — this is the ONLY installation method
-curl -fsSL https://raw.githubusercontent.com/anyvm-org/anyvm/v0.5.2/anyvm.py -o anyvm.py
+curl -fsSL https://github.com/anyvm-org/anyvm/releases/download/v0.5.5/anyvm.py -o anyvm.py
 chmod +x anyvm.py
 ```
+
+Check <https://github.com/anyvm-org/anyvm/releases> for the current tag before
+copying that URL — the pin here goes stale, and an old copy is not obviously
+old: it runs fine and just lacks whatever was fixed since.
 
 Only QEMU and standard system tools are required as dependencies (no pip packages).
 
@@ -202,7 +206,7 @@ python3 anyvm.py --os openbsd --arch aarch64 --cpu-type cortex-a72
 If `--release` is omitted, anyvm auto-selects an available release for that OS.
 `--arch` accepts: `x86_64` (default = host), `aarch64`, `riscv64`, `sparc64`, `powerpc64`, `s390x`, `loongarch64` (plus `i386` for GNU Hurd). Only the combinations marked Yes in the table above are built.
 
-Resource defaults: `--mem` is 4096 MB when the host has more than 4 GB RAM (else 2048); `--cpu` is the host core count capped at 8 with hardware acceleration, or 2 under TCG. Pass explicit values to override.
+Resource defaults: `--mem` is 4096 MB when the host has more than 4 GB RAM (else 2048); `--cpu` is the host core count capped at 8 with hardware acceleration, or 2 under TCG. Pass explicit values to override. BlissOS is the one exception: it defaults to 6144 MB, the amount its own builder builds and verifies with, because Android under software rendering needs it.
 
 ### Desktop releases (graphical, view via VNC Web UI)
 
@@ -283,6 +287,13 @@ python3 anyvm.py --os freebsd --public-vnc    # expose only the VNC Web UI on 0.
 
 # Enable IPv6 (disabled by default in QEMU slirp)
 python3 anyvm.py --os freebsd --enable-ipv6
+
+# Tell the guest which host port its SSH back-channel should use (default 22)
+python3 anyvm.py --os freebsd --host-ssh-port 2200
+
+# Authorize the VM's public key on the host, which is what makes reverse SSH
+# (guest -> host) work
+python3 anyvm.py --os freebsd --accept-vm-ssh
 ```
 
 ### Shared Folders
@@ -315,6 +326,9 @@ python3 anyvm.py --os freebsd --release 15.0-kde6 --vnc-password mypass
 
 # Remote VNC tunnel (auto / cf / lhr / pinggy / serveo)
 python3 anyvm.py --os freebsd --release 15.0-kde6 --remote-vnc cf
+
+# Write the tunnel URL somewhere a script can read it (instead of the .remote file)
+python3 anyvm.py --os freebsd --remote-vnc cf --remote-vnc-link-file /tmp/vnc.url
 
 # Pick a VGA device (default virtio; std for NetBSD/Haiku; cirrus for OpenBSD amd64 desktops)
 python3 anyvm.py --os netbsd --vga std
@@ -365,6 +379,28 @@ python3 anyvm.py --os freebsd --whpx
 python3 anyvm.py --os ubuntu --enable-pmu -- perf stat ls
 ```
 
+### Firmware and guest clock
+
+```bash
+# UEFI boot (implicit for FreeBSD)
+python3 anyvm.py --os freebsd --uefi
+
+# Point at a specific UEFI CODE firmware; implies --uefi and overrides the
+# auto-detection, which looks next to the QEMU binary first (share/edk2/ovmf,
+# share/OVMF, share/qemu) so a relocated install like ~/qemu-local works
+python3 anyvm.py --os freebsd --firmware /path/to/OVMF_CODE.fd
+
+# The matching VARS template, copied per-VM as the writable variable store.
+# Auto-detected next to the CODE firmware when omitted.
+python3 anyvm.py --os freebsd --firmware /path/OVMF_CODE.fd \
+                 --firmware-vars /path/OVMF_VARS.fd
+
+# NTP-sync the guest clock after boot. On by default for the DragonFlyBSD and
+# Solaris families, off elsewhere; --sync-time off turns it back off.
+python3 anyvm.py --os freebsd --sync-time
+python3 anyvm.py --os solaris --sync-time off
+```
+
 ## Debugging Guide
 
 ### VM won't start
@@ -411,15 +447,32 @@ python3 anyvm.py --os ubuntu --enable-pmu -- perf stat ls
 
 ## Key File Locations
 
-- **Images**: `./output/{os}/{os}-{version}.qcow2` (override the base dir with `--data-dir`)
+- **Images**: `<data dir>/{os}/{os}-{version}.qcow2`
 - **UEFI vars**: per-VM writable VARS file copied next to the image
 - **SSH keys**: downloaded alongside images (`.key` files)
-- **Custom data dir**: `--data-dir /path/to/storage` (default `./output`)
+- **Data dir**: `--data-dir /path/to/storage` (`--workingdir` is an accepted
+  alias). The default depends on how anyvm
+  got there. Run from a downloaded/checked-out `anyvm.py` and it is
+  `<that file's dir>/output`, as before. Installed by a packager (the pipx/pip
+  console script, the Homebrew formula) it is a per-user cache instead:
+  `%LOCALAPPDATA%\anyvm\images`, `~/Library/Caches/anyvm/images`, or
+  `$XDG_CACHE_HOME/anyvm/images` (`~/.cache/anyvm/images`). An installed copy
+  never writes multi-GB images into its own package directory, where the next
+  upgrade would silently take them with it. The packaging sets `ANYVM_INSTALLED`
+  (or calls the `main_installed` entry point) to say so — anyvm does not guess
+  it from its own path, because that misreads a vendored copy or a checkout
+  that happens to sit under a `site-packages` directory.
 - **Cache dir**: `--cache-dir /path/to/cache` (avoids re-download/re-extract; pairs with `--snapshot`)
 
 ## Important Notes
 
 - anyvm downloads pre-built images automatically on first run — internet access is required
+- **Under WSL, point `--data-dir` at a Windows drive** (`/mnt/f/...`). WSL's
+  `ext4.vhdx` only ever grows: a few images under `$HOME` or `~/.cache` inflate
+  it by gigabytes permanently, and deleting them afterwards does not give the
+  space back — that needs `wsl --shutdown` plus a manual compact
+  (`wsl --manage <distro> --set-sparse true` on recent WSL). A `/mnt/<drive>`
+  path is a pass-through mount and never touches the vhdx.
 - Default SSH credentials use key-based auth (keys are bundled with images)
 - The default SSH host port is an auto-detected free port, not a fixed 2222 — read anyvm's output
 - The VNC Web UI is a built-in feature — no extra software needed
