@@ -1,7 +1,7 @@
 ---
 name: anyvm
 version: "1.4.0"
-description: "Run, manage, debug, and test/build/run code inside BSD, Illumos, Linux, Android, GNU Hurd, and Plan 9 VMs with anyvm + QEMU. Covers FreeBSD, GhostBSD, MidnightBSD, OpenBSD, NetBSD, DragonFlyBSD, Solaris, OmniOS, OpenIndiana, Tribblix, Haiku, Ubuntu, openEuler, BlissOS, GNU Hurd, and Plan 9 (9front) across x86_64, aarch64, riscv64, sparc64, powerpc64, s390x, and loongarch64. Use when the user is writing code that must compile, run, or be tested on one of these operating systems or CPU architectures, needs to reproduce a platform-specific bug, checks cross-platform or cross-architecture portability, or wants to start, SSH into, port-forward, or share folders with such a VM."
+description: "Run, manage, debug, and test/build/run code inside BSD, Illumos, Linux, Android, GNU Hurd, Plan 9, and ReactOS VMs with anyvm + QEMU. Covers FreeBSD, GhostBSD, MidnightBSD, NextBSD, OpenBSD, NetBSD, DragonFlyBSD, Solaris, OmniOS, OpenIndiana, Tribblix, Haiku, Ubuntu, openEuler, BlissOS, GNU Hurd, Plan 9 (9front), and ReactOS across x86_64, i386, aarch64, riscv64, sparc64, powerpc64, s390x, and loongarch64. Use when the user is writing code that must compile, run, or be tested on one of these operating systems or CPU architectures, needs to reproduce a platform-specific bug, checks cross-platform or cross-architecture portability, or wants to start, SSH into, port-forward, or share folders with such a VM."
 argument-hint: 'anyvm freebsd, anyvm openbsd debug networking, anyvm start ubuntu vm'
 allowed-tools: Bash, Read, Write, Edit, WebSearch, WebFetch
 homepage: https://github.com/anyvm-org/anyvm
@@ -16,6 +16,7 @@ metadata:
     - freebsd
     - ghostbsd
     - midnightbsd
+    - nextbsd
     - openbsd
     - netbsd
     - dragonflybsd
@@ -31,6 +32,7 @@ metadata:
     - android
     - hurd
     - plan9
+    - reactos
     - bsd
     - illumos
     - linux
@@ -39,7 +41,7 @@ metadata:
 
 # anyvm Skill
 
-You are an expert at running and debugging BSD, Illumos, Linux, Android (BlissOS), GNU Hurd, and Plan 9 virtual machines using **anyvm** — a single-file Python tool that bootstraps guest VMs with QEMU on Linux, macOS, and Windows. It downloads pre-built cloud images, sets up firmware, configures access (SSH, or telnet+9P for Plan 9), and boots the guest with sane defaults.
+You are an expert at running and debugging BSD, Illumos, Linux, Android (BlissOS), GNU Hurd, Plan 9, and ReactOS virtual machines using **anyvm** — a single-file Python tool that bootstraps guest VMs with QEMU on Linux, macOS, and Windows. It downloads pre-built cloud images, sets up firmware, configures access (SSH, or telnet for Plan 9 and ReactOS), and boots the guest with sane defaults.
 
 ## When to Activate
 
@@ -53,32 +55,36 @@ Activate this skill when the user wants to:
 
 ## Supported Guest Operating Systems
 
-Architecture columns: x86_64 / aarch64 / riscv64 / powerpc64 / sparc64 / s390x / loongarch64.
+Architecture columns: x86_64 / i386 / aarch64 / riscv64 / powerpc64 / sparc64 / s390x / loongarch64.
 
-| Guest OS | x86_64 | aarch64 | riscv64 | ppc64 | sparc64 | s390x | loongarch64 |
-|---|---|---|---|---|---|---|---|
-| FreeBSD (12.4–15.0, desktop: -xfce/-gnome/-kde6) | Yes | Yes | Yes | Yes | — | — | — |
-| OpenBSD (7.3–7.9, desktop: -xfce/-gnome/-kde6/-mate/-lxqt/-lumina/-enlightenment) | Yes | Yes | Yes | — | Yes | — | — |
-| NetBSD | Yes | Yes | Yes | — | Yes | — | — |
-| DragonFlyBSD | Yes | — | — | — | — | — | — |
-| MidnightBSD | Yes | — | — | — | — | — | — |
-| GhostBSD (FreeBSD-based desktop: MATE default, -xfce, -gershwin) | Yes | — | — | — | — | — | — |
-| Solaris | Yes | — | — | — | — | — | — |
-| OmniOS | Yes | — | — | — | — | — | — |
-| OpenIndiana | Yes | — | — | — | — | — | — |
-| Tribblix | Yes | — | — | — | — | — | — |
-| Haiku | Yes | — | — | — | — | — | — |
-| Ubuntu (e.g. 24.04) | Yes | Yes | Yes | Yes | — | Yes | — |
-| openEuler (22.03-LTS-SP4 / 24.03-LTS-SP4 / 25.09) | Yes | Yes | Yes (25.09 only) | — | — | — | Yes (24.03-LTS-SP4 only) |
-| BlissOS (Android-x86; 14/15/16 = Android 11/12L/13) | Yes | — | — | — | — | — | — |
-| GNU Hurd (Debian; also 32-bit i386 via `--arch i386`) | Yes | — | — | — | — | — | — |
-| Plan 9 (9front; telnet console + 9P sync, not SSH) | Yes | — | — | — | — | — | — |
+| Guest OS | x86_64 | i386 | aarch64 | riscv64 | ppc64 | sparc64 | s390x | loongarch64 |
+|---|---|---|---|---|---|---|---|---|
+| FreeBSD (12.4–15.0, desktop: -xfce/-gnome/-kde6) | Yes | — | Yes | Yes | Yes | — | — | — |
+| OpenBSD (7.3–7.9, desktop: -xfce/-gnome/-kde6/-mate/-lxqt/-lumina/-enlightenment) | Yes | — | Yes | Yes | — | Yes | — | — |
+| NetBSD | Yes | — | Yes | Yes | — | Yes | — | — |
+| DragonFlyBSD | Yes | — | — | — | — | — | — | — |
+| MidnightBSD | Yes | — | — | — | — | — | — | — |
+| GhostBSD (FreeBSD-based desktop: MATE default, -xfce, -gershwin) | Yes | — | — | — | — | — | — | — |
+| NextBSD (launchd/Mach userland; one rolling `continuous` release) | Yes | — | — | — | — | — | — | — |
+| Solaris | Yes | — | — | — | — | — | — | — |
+| OmniOS | Yes | — | — | — | — | — | — | — |
+| OpenIndiana | Yes | — | — | — | — | — | — | — |
+| Tribblix | Yes | — | — | — | — | — | — | — |
+| Haiku | Yes | — | — | — | — | — | — | — |
+| Ubuntu (e.g. 24.04) | Yes | — | Yes | Yes | Yes | — | Yes | — |
+| openEuler (22.03-LTS-SP4 / 24.03-LTS-SP4 / 25.09) | Yes | — | Yes | Yes (25.09 only) | — | — | — | Yes (24.03-LTS-SP4 only) |
+| BlissOS (Android-x86; 14/15/16 = Android 11/12L/13) | Yes | — | — | — | — | — | — | — |
+| GNU Hurd (Debian; 32-bit needs `--arch i386`) | Yes | Yes | — | — | — | — | — | — |
+| Plan 9 (9front; telnet console + 9P sync, not SSH) | Yes | — | — | — | — | — | — | — |
+| ReactOS (0.4.15; i386 only, arch defaults to it; telnet console + tar sync, not SSH) | — | Yes | — | — | — | — | — | — |
 
-> The `--os` value is one of: `freebsd`, `ghostbsd`, `midnightbsd`, `openbsd`, `netbsd`, `dragonflybsd`, `solaris`, `omnios`, `openindiana`, `tribblix`, `haiku`, `ubuntu`, `openeuler`, `blissos`, `hurd`, `plan9`.
+> The `--os` value is one of: `freebsd`, `ghostbsd`, `midnightbsd`, `nextbsd`, `openbsd`, `netbsd`, `dragonflybsd`, `solaris`, `omnios`, `openindiana`, `tribblix`, `haiku`, `ubuntu`, `openeuler`, `blissos`, `hurd`, `plan9`, `reactos`.
 
 ### Special guests (read before using)
 
 - **Plan 9 (9front)** has **no SSH**. anyvm talks to it over a telnet console and syncs `-v` folders over **9P** automatically. Starting it drops you into an interactive telnet session (press `Ctrl-]` to detach and leave the VM running). The SSH aliases, `ssh <port>` reconnect, `-- cmd` (goes to ssh), and `--sync rsync/scp/sshfs/nfs` guidance below do **not** apply to `plan9`.
+- **ReactOS** is a **tech preview** and has **no SSH**: the image carries a small telnet server the builder bakes in, and anyvm drives the guest over it (same transport as `plan9`). It is published for 32-bit x86 only, and it is the one guest whose `--arch` anyvm does not take from the host: `--os reactos` resolves to `i386` by itself (older anyvm builds needed `--arch i386` spelled out). It boots on any host — ~18 s with KVM, ~35 s under Windows WHPX, ~68 s under pure TCG — but only because anyvm skips `-rtc driftfix=slew` for it; with that option its HAL calibrates a stall factor of 0 and every delay loop runs 2^32 times, so the boot never ends. Folder sync is `--sync tar` (its default and only backend): a ustar stream over that same telnet channel, pushed in at boot and pulled back after the command, with Windows-style guest paths (`-v "$PWD:C:\work"`). The SSH aliases, `ssh <port>` reconnect, `-- cmd` over ssh, and `--sync rsync/scp/sshfs/nfs` guidance below do **not** apply to `reactos`.
+- **NextBSD** publishes no versioned releases: upstream refreshes a single rolling `continuous` tag, and each builder release freezes one snapshot of it, so `--release` is only ever `continuous`. Folder sync works with `rsync`, `scp`, `nfs` or `tar`, but **not `sshfs`**.
 - **GNU Hurd (Debian)** runs x86_64 or 32-bit `--arch i386`. Folder sync works with `rsync`, `scp`, or `nfs`, but **not `sshfs`** (Hurd has no FUSE).
 - **BlissOS (Android)** supports `scp` sync only; anyvm defaults its `--sync` to `scp`. You get root SSH plus the Android home screen on the VNC Web UI.
 - **openEuler** release names follow upstream in full (`22.03-LTS-SP4`, `24.03-LTS-SP4`, `25.09`). The `riscv64` port (25.09 only) has **no sshfs package** — use `rsync`/`scp`/`nfs` there. The `loongarch64` guest (24.03-LTS-SP4 only) needs QEMU >= 9.2 for the bundled EDK2 LoongArch firmware; on Linux x86_64 hosts with an older QEMU (e.g. Ubuntu 24.04's 8.2), anyvm automatically downloads a pinned QEMU 10.2.3 from the openeuler-builder release assets — no manual setup.
@@ -189,12 +195,18 @@ python3 anyvm.py --os blissos                 # latest (16, Android 13)
 python3 anyvm.py --os blissos --release 15    # Android 12L
 python3 anyvm.py --os blissos --release 14    # Android 11
 
+# NextBSD (launchd/Mach userland; one rolling snapshot)
+python3 anyvm.py --os nextbsd
+
 # GNU Hurd (Debian; 64-bit or 32-bit i386)
 python3 anyvm.py --os hurd
 python3 anyvm.py --os hurd --arch i386
 
 # Plan 9 (9front) — telnet console + 9P folder sync, NOT ssh (Ctrl-] to detach)
 python3 anyvm.py --os plan9
+
+# ReactOS — i386 only (auto), telnet console + tar folder sync, NOT ssh
+python3 anyvm.py --os reactos
 
 # Custom resources
 python3 anyvm.py --os freebsd --mem 4096 --cpu 4
@@ -258,7 +270,7 @@ ssh -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@loc
 
 > **Important:** The VM does NOT shut down after the initial command completes — it keeps running in the background. anyvm prints exactly how to reconnect (`ssh <name>`, `ssh <port>`, `ssh <ssh-name>`). Once a VM is started, always use `ssh` directly for any further commands. Do NOT call `python3 anyvm.py --os ... -- command` again — that would try to start a new VM instance. Use `--ssh-name <name>` to get a memorable alias.
 >
-> **Plan 9 exception:** `plan9` has no SSH. anyvm drops you into an interactive telnet console; press `Ctrl-]` to detach and leave the VM running. Reconnect with `telnet` on the port anyvm printed rather than `ssh`.
+> **Plan 9 / ReactOS exception:** neither `plan9` nor `reactos` has SSH. anyvm drops you into an interactive telnet console; press `Ctrl-]` to detach and leave the VM running. Reconnect with `telnet` on the port anyvm printed rather than `ssh`.
 
 ### Networking
 
@@ -417,7 +429,7 @@ python3 anyvm.py --os solaris --sync-time off
 2. Use the SSH port/alias shown in anyvm's output (it is auto-assigned, not a fixed 2222)
 3. Try manually: `ssh -p <port> -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@localhost`
 4. Inspect boot via serial console: `python3 anyvm.py --os freebsd --serial 7000` then `nc localhost 7000`
-5. `plan9` has no SSH — connect via telnet on the port anyvm printed instead
+5. `plan9` and `reactos` have no SSH — connect via telnet on the port anyvm printed instead
 
 ### Networking issues inside VM
 1. SSH into the VM and check: `ifconfig` or `ip addr`
