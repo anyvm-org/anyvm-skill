@@ -33,6 +33,8 @@ metadata:
     - hurd
     - plan9
     - reactos
+    - riscos
+    - redox
     - bsd
     - illumos
     - linux
@@ -77,13 +79,20 @@ Architecture columns: x86_64 / i386 / aarch64 / riscv64 / powerpc64 / sparc64 / 
 | GNU Hurd (Debian; 32-bit needs `--arch i386`) | Yes | Yes | — | — | — | — | — | — |
 | Plan 9 (9front; telnet console + 9P sync, not SSH) | Yes | — | — | — | — | — | — | — |
 | ReactOS (0.4.15; i386 only, arch defaults to it; telnet console + tar sync, not SSH) | — | Yes | — | — | — | — | — | — |
+| RISC OS (5.30; 32-bit armv7 only, arch defaults to it; telnet agent + tar sync, not SSH) | — | — | — | — | — | — | — | — |
+| Redox OS (0.9.0; Rust microkernel; telnet agent + tar sync, not SSH) | Yes | — | — | — | — | — | — | — |
 
-> The `--os` value is one of: `freebsd`, `ghostbsd`, `midnightbsd`, `nextbsd`, `openbsd`, `netbsd`, `dragonflybsd`, `solaris`, `omnios`, `openindiana`, `tribblix`, `haiku`, `ubuntu`, `openeuler`, `blissos`, `hurd`, `plan9`, `reactos`.
+> RISC OS is 32-bit ARM (`armv7`), which is not a column here because it is
+> the only guest that uses it; `--os riscos` resolves to it on its own.
+
+> The `--os` value is one of: `freebsd`, `ghostbsd`, `midnightbsd`, `nextbsd`, `openbsd`, `netbsd`, `dragonflybsd`, `solaris`, `omnios`, `openindiana`, `tribblix`, `haiku`, `ubuntu`, `openeuler`, `blissos`, `hurd`, `plan9`, `reactos`, `riscos`, `redox`.
 
 ### Special guests (read before using)
 
 - **Plan 9 (9front)** has **no SSH**. anyvm talks to it over a telnet console and syncs `-v` folders over **9P** automatically. Starting it drops you into an interactive telnet session (press `Ctrl-]` to detach and leave the VM running). The SSH aliases, `ssh <port>` reconnect, `-- cmd` (goes to ssh), and `--sync rsync/scp/sshfs/nfs` guidance below do **not** apply to `plan9`.
 - **ReactOS** is a **tech preview** and has **no SSH**: the image carries a small telnet server the builder bakes in, and anyvm drives the guest over it (same transport as `plan9`). It is published for 32-bit x86 only, and it is the one guest whose `--arch` anyvm does not take from the host: `--os reactos` resolves to `i386` by itself (older anyvm builds needed `--arch i386` spelled out). It boots on any host — ~18 s with KVM, ~35 s under Windows WHPX, ~68 s under pure TCG — but only because anyvm skips `-rtc driftfix=slew` for it; with that option its HAL calibrates a stall factor of 0 and every delay loop runs 2^32 times, so the boot never ends. Folder sync is `--sync tar` (its default and only backend): a ustar stream over that same telnet channel, pushed in at boot and pulled back after the command, with Windows-style guest paths (`-v "$PWD:C:\work"`). The SSH aliases, `ssh <port>` reconnect, `-- cmd` over ssh, and `--sync rsync/scp/sshfs/nfs` guidance below do **not** apply to `reactos`.
+- **RISC OS** is a **tech preview** and has **no SSH**: the image carries a small telnet agent written in Python that riscos-builder bakes in, and anyvm drives the guest over it. It is 32-bit ARM only and, like `reactos`, does not take `--arch` from the host: `--os riscos` resolves to `armv7` by itself (note `arm` is an alias for `aarch64`, a different guest entirely). anyvm downloads a **patched QEMU** for it automatically on Linux x86_64 — no released QEMU boots RISC OS on a Raspberry Pi machine. **There is no keyboard**: the Pi ROM ships no USB keyboard driver, so the VNC desktop is look-only and the guest must be driven with `-- cmd`. Folder sync is `--sync tar` (its default and only backend) and guest paths are RISC OS paths (`-v "$PWD:\$.work"`, not `/work`).
+- **Redox OS** has **no SSH**: Redox ships no remote-access server at all, so redox-builder bakes in its own telnet agent. That agent cannot be an ordinary program — the 0.9.0 kernel has no process-creation syscall, spawning lives in userspace — so it is a `no_std` binary linked against Redox's own runtime. anyvm drives the guest over that channel, the same transport as `plan9`, `reactos` and `riscos`. It is x86_64 only. Its bootloader always shows a video-mode menu with no timeout; anyvm presses Return over the QEMU monitor until the guest is up, so no interaction is needed. Folder sync is `--sync tar` (its default and only backend), with ordinary Unix guest paths (`-v "$PWD:/work"`). The SSH aliases, `ssh <port>` reconnect, `-- cmd` over ssh, and `--sync rsync/scp/sshfs/nfs` guidance below do **not** apply.
 - **NextBSD** publishes no versioned releases: upstream refreshes a single rolling `continuous` tag, and each builder release freezes one snapshot of it, so `--release` is only ever `continuous`. Folder sync works with `rsync`, `scp`, `nfs` or `tar`, but **not `sshfs`**.
 - **GNU Hurd (Debian)** runs x86_64 or 32-bit `--arch i386`. Folder sync works with `rsync`, `scp`, or `nfs`, but **not `sshfs`** (Hurd has no FUSE).
 - **BlissOS (Android)** supports `scp` sync only; anyvm defaults its `--sync` to `scp`. You get root SSH plus the Android home screen on the VNC Web UI.
@@ -208,6 +217,12 @@ python3 anyvm.py --os plan9
 # ReactOS — i386 only (auto), telnet console + tar folder sync, NOT ssh
 python3 anyvm.py --os reactos
 
+# RISC OS — armv7 only (auto), telnet agent + tar folder sync, NOT ssh
+python3 anyvm.py --os riscos
+
+# Redox OS — Rust microkernel, telnet agent + tar folder sync, NOT ssh
+python3 anyvm.py --os redox
+
 # Custom resources
 python3 anyvm.py --os freebsd --mem 4096 --cpu 4
 
@@ -270,7 +285,7 @@ ssh -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@loc
 
 > **Important:** The VM does NOT shut down after the initial command completes — it keeps running in the background. anyvm prints exactly how to reconnect (`ssh <name>`, `ssh <port>`, `ssh <ssh-name>`). Once a VM is started, always use `ssh` directly for any further commands. Do NOT call `python3 anyvm.py --os ... -- command` again — that would try to start a new VM instance. Use `--ssh-name <name>` to get a memorable alias.
 >
-> **Plan 9 / ReactOS exception:** neither `plan9` nor `reactos` has SSH. anyvm drops you into an interactive telnet console; press `Ctrl-]` to detach and leave the VM running. Reconnect with `telnet` on the port anyvm printed rather than `ssh`.
+> **Telnet-guest exception:** none of `plan9`, `reactos`, `riscos` or `redox` has SSH. anyvm drops you into an interactive telnet console; press `Ctrl-]` to detach and leave the VM running. Reconnect with `telnet` on the port anyvm printed rather than `ssh`.
 
 ### Networking
 
@@ -429,7 +444,7 @@ python3 anyvm.py --os solaris --sync-time off
 2. Use the SSH port/alias shown in anyvm's output (it is auto-assigned, not a fixed 2222)
 3. Try manually: `ssh -p <port> -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@localhost`
 4. Inspect boot via serial console: `python3 anyvm.py --os freebsd --serial 7000` then `nc localhost 7000`
-5. `plan9` and `reactos` have no SSH — connect via telnet on the port anyvm printed instead
+5. `plan9`, `reactos`, `riscos` and `redox` have no SSH — connect via telnet on the port anyvm printed instead
 
 ### Networking issues inside VM
 1. SSH into the VM and check: `ifconfig` or `ip addr`
