@@ -204,8 +204,9 @@ python3 anyvm.py --os blissos                 # latest (16, Android 13)
 python3 anyvm.py --os blissos --release 15    # Android 12L
 python3 anyvm.py --os blissos --release 14    # Android 11
 
-# NextBSD (launchd/Mach userland; one rolling snapshot)
+# NextBSD (launchd/Mach userland; one rolling snapshot, amd64 or arm64)
 python3 anyvm.py --os nextbsd
+python3 anyvm.py --os nextbsd --arch aarch64
 
 # GNU Hurd (Debian; 64-bit or 32-bit i386)
 python3 anyvm.py --os hurd
