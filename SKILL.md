@@ -1,7 +1,7 @@
 ---
 name: anyvm
 version: "1.5.0"
-description: "Run, manage, debug, and test/build/run code inside BSD, Illumos, Linux, Android, GNU Hurd, Plan 9, and ReactOS VMs with anyvm + QEMU. Covers FreeBSD, HardenedBSD, OPNsense, GhostBSD, MidnightBSD, NextBSD, OpenBSD, NetBSD, DragonFlyBSD, Solaris, OmniOS, OpenIndiana, Tribblix, Haiku, Ubuntu, Debian, Rocky Linux, openEuler, Alpine, BlissOS, GNU Hurd, Plan 9 (9front), and ReactOS across x86_64, i386, aarch64, riscv64, sparc64, powerpc64, s390x, and loongarch64. Use when the user is writing code that must compile, run, or be tested on one of these operating systems or CPU architectures, needs to reproduce a platform-specific bug, checks cross-platform or cross-architecture portability, or wants to start, SSH into, port-forward, or share folders with such a VM."
+description: "Run, manage, debug, and test/build/run code inside BSD, Illumos, Linux, Android, GNU Hurd, Plan 9, and ReactOS VMs with anyvm + QEMU. Covers FreeBSD, HardenedBSD, OPNsense, GhostBSD, MidnightBSD, NextBSD, OpenBSD, NetBSD, DragonFlyBSD, Solaris, OmniOS, OpenIndiana, Tribblix, Haiku, Ubuntu, Debian, Rocky Linux, AlmaLinux, openEuler, Alpine, BlissOS, GNU Hurd, Plan 9 (9front), and ReactOS across x86_64, i386, aarch64, riscv64, sparc64, powerpc64, s390x, and loongarch64. Use when the user is writing code that must compile, run, or be tested on one of these operating systems or CPU architectures, needs to reproduce a platform-specific bug, checks cross-platform or cross-architecture portability, or wants to start, SSH into, port-forward, or share folders with such a VM."
 argument-hint: 'anyvm freebsd, anyvm openbsd debug networking, anyvm start ubuntu vm'
 allowed-tools: Bash, Read, Write, Edit, WebSearch, WebFetch
 homepage: https://github.com/anyvm-org/anyvm
@@ -30,6 +30,7 @@ metadata:
     - ubuntu
     - debian
     - rocky
+    - almalinux
     - openeuler
     - alpine
     - loongarch64
@@ -83,6 +84,7 @@ Architecture columns: x86_64 / i386 / aarch64 / riscv64 / powerpc64 / sparc64 / 
 | Ubuntu (e.g. 24.04) | Yes | — | Yes | Yes | Yes | — | Yes | — |
 | Debian (12 / 13; riscv64 on 13 only) | Yes | — | Yes | Yes | Yes | — | — | — |
 | Rocky Linux (9 / 10; ppc64le on 10 only) | Yes | — | Yes | — | Yes | — | Yes | — |
+| AlmaLinux (9 / 10; ppc64le on 10 only) | Yes | — | Yes | — | Yes | — | Yes | — |
 | openEuler (22.03-LTS-SP4 / 24.03-LTS-SP4 / 25.09) | Yes | — | Yes | Yes (25.09 only) | — | — | — | Yes (24.03-LTS-SP4 only) |
 | Alpine (3.23 / 3.24) | Yes | — | Yes | — | — | — | — | — |
 | BlissOS (Android-x86; 14/15/16 = Android 11/12L/13) | Yes | — | — | — | — | — | — | — |
@@ -95,7 +97,7 @@ Architecture columns: x86_64 / i386 / aarch64 / riscv64 / powerpc64 / sparc64 / 
 > RISC OS is 32-bit ARM (`armv7`), which is not a column here because it is
 > the only guest that uses it; `--os riscos` resolves to it on its own.
 
-> The `--os` value is one of: `freebsd`, `hardenedbsd`, `opnsense`, `ghostbsd`, `midnightbsd`, `nextbsd`, `openbsd`, `netbsd`, `dragonflybsd`, `solaris`, `omnios`, `openindiana`, `tribblix`, `haiku`, `ubuntu`, `debian`, `rocky`, `openeuler`, `alpine`, `blissos`, `hurd`, `plan9`, `reactos`, `riscos`, `redox`.
+> The `--os` value is one of: `freebsd`, `hardenedbsd`, `opnsense`, `ghostbsd`, `midnightbsd`, `nextbsd`, `openbsd`, `netbsd`, `dragonflybsd`, `solaris`, `omnios`, `openindiana`, `tribblix`, `haiku`, `ubuntu`, `debian`, `rocky`, `almalinux`, `openeuler`, `alpine`, `blissos`, `hurd`, `plan9`, `reactos`, `riscos`, `redox`.
 
 ### Special guests (read before using)
 
@@ -109,6 +111,7 @@ Architecture columns: x86_64 / i386 / aarch64 / riscv64 / powerpc64 / sparc64 / 
 - **OPNsense** is a FreeBSD-based firewall appliance (amd64 only). You get root SSH into a configured appliance; the VNC console shows OPNsense's numbered menu and the web GUI is on guest port 443 (forward it with `-p`). **The root shell is csh** -- Bourne-isms like `2>&1` in a `-- cmd` are syntax errors, wrap in `sh -c '...'`. Folder sync is `rsync`/`scp`/`nfs`/`tar`; **no sshfs** (OPNsense's package repository has no fusefs-sshfs). Durable configuration lives in `/conf/config.xml`, not rc files.
 - **HardenedBSD** builds amd64 only and publishes no numbered releases: `--release 15` follows the rolling 15-STABLE branch (each builder release freezes one upstream `LATEST` build, the same model as NextBSD's `continuous`). Behaves like FreeBSD otherwise; all five sync backends work.
 - **Rocky Linux** is the RHEL-compatible enterprise distribution (releases `9` and `10`). `10` has all four architectures; `9` has x86_64, aarch64 and s390x -- upstream publishes no 9 ppc64le cloud image. **No sshfs**: `fuse-sshfs` is EPEL-only, so folder sync is `rsync`/`scp`/`nfs`/`tar`. SELinux runs enforcing; files you add to `/root/.ssh` from outside the guest need relabelling or sshd ignores them.
+- **AlmaLinux** is the other RHEL-compatible enterprise distribution, same shape as Rocky (releases `9` and `10`; `10` has four architectures, `9` has x86_64/aarch64/s390x). **No sshfs** (`fuse-sshfs` is EPEL-only) and SELinux runs enforcing, exactly as on Rocky. There is no 9 `ppc64le` image even though upstream publishes one: under emulation its cloud-init crashes repeatably inside Python 3.9 and the guest never gets a network.
 - **Alpine** release names are the branch (`3.23`, `3.24`) -- patch bumps update the image within the same release name, like Ubuntu's `24.04`. Both releases ship x86_64 and aarch64; rsync, sshfs and the NFS client are pre-installed, so all five sync backends work.
 - **openEuler** release names follow upstream in full (`22.03-LTS-SP4`, `24.03-LTS-SP4`, `25.09`). The `riscv64` port (25.09 only) has **no sshfs package** — use `rsync`/`scp`/`nfs` there. The `loongarch64` guest (24.03-LTS-SP4 only) needs QEMU >= 9.2 for the bundled EDK2 LoongArch firmware; on Linux x86_64 hosts with an older QEMU (e.g. Ubuntu 24.04's 8.2), anyvm automatically downloads a pinned QEMU 10.2.3 from the openeuler-builder release assets — no manual setup.
 
@@ -207,6 +210,10 @@ python3 anyvm.py --os openeuler --release 24.03-LTS-SP4 --arch loongarch64
 # Alpine (release = branch: 3.23 / 3.24, both x86_64 and aarch64)
 python3 anyvm.py --os alpine
 python3 anyvm.py --os alpine --release 3.24 --arch aarch64
+
+# AlmaLinux (9 / 10; ppc64le on 10 only)
+python3 anyvm.py --os almalinux
+python3 anyvm.py --os almalinux --release 10 --arch ppc64le
 
 # Rocky Linux (9 / 10; ppc64le on 10 only)
 python3 anyvm.py --os rocky

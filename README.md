@@ -43,6 +43,7 @@ Architecture columns: x86_64 / aarch64 / riscv64 / powerpc64 / sparc64 / s390x /
 | Ubuntu (e.g. 24.04) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | | :white_check_mark: | |
 | Debian (12 / 13; riscv64 on 13 only) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | | | |
 | Rocky Linux (9 / 10; ppc64le on 10 only) | :white_check_mark: | :white_check_mark: | | :white_check_mark: | | :white_check_mark: | |
+| AlmaLinux (9 / 10; ppc64le on 10 only) | :white_check_mark: | :white_check_mark: | | :white_check_mark: | | :white_check_mark: | |
 | openEuler (22.03-LTS-SP4 / 24.03-LTS-SP4 / 25.09) | :white_check_mark: | :white_check_mark: | :white_check_mark: | | | | :white_check_mark: |
 | Alpine (3.23 / 3.24) | :white_check_mark: | :white_check_mark: | | | | | |
 | BlissOS (Android-x86; 14/15/16 = Android 11/12L/13) | :white_check_mark: | | | | | | |
