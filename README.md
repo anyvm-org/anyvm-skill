@@ -28,6 +28,7 @@ Architecture columns: x86_64 / aarch64 / riscv64 / powerpc64 / sparc64 / s390x /
 | Guest OS | x86_64 | aarch64 | riscv64 | ppc64 | sparc64 | s390x | loongarch64 |
 |---|---|---|---|---|---|---|---|
 | FreeBSD (12.4–15.0, desktop: xfce/gnome/kde6) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | | | |
+| HardenedBSD (release `15` = rolling 15-STABLE) | :white_check_mark: | | | | | | |
 | OpenBSD (7.3–7.9, desktops: xfce/gnome/kde6/mate/lxqt/lumina/enlightenment) | :white_check_mark: | :white_check_mark: | :white_check_mark: | | :white_check_mark: | | |
 | NetBSD | :white_check_mark: | :white_check_mark: | :white_check_mark: | | :white_check_mark: | | |
 | DragonFlyBSD | :white_check_mark: | | | | | | |
@@ -39,7 +40,9 @@ Architecture columns: x86_64 / aarch64 / riscv64 / powerpc64 / sparc64 / s390x /
 | Tribblix | :white_check_mark: | | | | | | |
 | Haiku | :white_check_mark: | | | | | | |
 | Ubuntu (e.g. 24.04) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | | :white_check_mark: | |
+| Debian (12 / 13; riscv64 on 13 only) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | | | |
 | openEuler (22.03-LTS-SP4 / 24.03-LTS-SP4 / 25.09) | :white_check_mark: | :white_check_mark: | :white_check_mark: | | | | :white_check_mark: |
+| Alpine (3.23 / 3.24) | :white_check_mark: | :white_check_mark: | | | | | |
 | BlissOS (Android-x86; 14/15/16 = Android 11/12L/13) | :white_check_mark: | | | | | | |
 | GNU Hurd (Debian; also 32-bit i386) | :white_check_mark: | | | | | | |
 | Plan 9 (9front; telnet + 9P, not SSH) | :white_check_mark: | | | | | | |
