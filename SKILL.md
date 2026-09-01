@@ -90,7 +90,7 @@ Architecture columns: x86_64 / i386 / aarch64 / riscv64 / powerpc64 / sparc64 / 
 | BlissOS (Android-x86; 14/15/16 = Android 11/12L/13) | Yes | — | — | — | — | — | — | — |
 | GNU Hurd (Debian; 32-bit needs `--arch i386`) | Yes | Yes | — | — | — | — | — | — |
 | Plan 9 (9front; telnet console + 9P sync, not SSH) | Yes | — | — | — | — | — | — | — |
-| ReactOS (0.4.15; i386 only, arch defaults to it; telnet console + tar sync, not SSH) | — | Yes | — | — | — | — | — | — |
+| ReactOS (0.4.15 / 0.4.16; i386 only, arch defaults to it; telnet console + tar sync, not SSH) | — | Yes | — | — | — | — | — | — |
 | RISC OS (5.30; 32-bit armv7 only, arch defaults to it; telnet agent + tar sync, not SSH) | — | — | — | — | — | — | — | — |
 | Redox OS (0.9.0; Rust microkernel; telnet agent + tar sync, not SSH) | Yes | — | — | — | — | — | — | — |
 
