@@ -27,7 +27,7 @@ Architecture columns: x86_64 / aarch64 / riscv64 / powerpc64 / sparc64 / s390x /
 
 | Guest OS | x86_64 | aarch64 | riscv64 | ppc64 | sparc64 | s390x | loongarch64 |
 |---|---|---|---|---|---|---|---|
-| FreeBSD (12.4–15.0, desktop: xfce/gnome/kde6) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | | | |
+| FreeBSD (10.4–15.1 on x86_64, 12.4–15.1 elsewhere; desktop: xfce/gnome/kde6) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | | | |
 | HardenedBSD (release `15` = rolling 15-STABLE) | :white_check_mark: | | | | | | |
 | OPNsense (26.7; FreeBSD-based firewall appliance) | :white_check_mark: | | | | | | |
 | OpenBSD (7.3–7.9, desktops: xfce/gnome/kde6/mate/lxqt/lumina/enlightenment) | :white_check_mark: | :white_check_mark: | :white_check_mark: | | :white_check_mark: | | |

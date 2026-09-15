@@ -67,7 +67,7 @@ Architecture columns: x86_64 / i386 / aarch64 / riscv64 / powerpc64 / sparc64 / 
 
 | Guest OS | x86_64 | i386 | aarch64 | riscv64 | ppc64 | sparc64 | s390x | loongarch64 |
 |---|---|---|---|---|---|---|---|---|
-| FreeBSD (12.4–15.0, desktop: -xfce/-gnome/-kde6) | Yes | — | Yes | Yes | Yes | — | — | — |
+| FreeBSD (10.4–15.1 on x86_64, 12.4–15.1 elsewhere; desktop: -xfce/-gnome/-kde6) | Yes | — | Yes | Yes | Yes | — | — | — |
 | HardenedBSD (release `15` tracks the rolling 15-STABLE branch) | Yes | — | — | — | — | — | — | — |
 | OPNsense (26.7; FreeBSD-based firewall appliance) | Yes | — | — | — | — | — | — | — |
 | OpenBSD (7.3–7.9, desktop: -xfce/-gnome/-kde6/-mate/-lxqt/-lumina/-enlightenment) | Yes | — | Yes | Yes | — | Yes | — | — |
