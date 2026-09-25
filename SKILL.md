@@ -154,7 +154,8 @@ Only QEMU and standard system tools are required as dependencies (no pip package
 sudo apt-get --no-install-recommends -y install \
   zstd ovmf xz-utils qemu-utils ca-certificates \
   qemu-system-x86 qemu-system-arm qemu-efi-aarch64 \
-  qemu-efi-riscv64 qemu-system-riscv64 qemu-system-misc u-boot-qemu \
+  qemu-efi-riscv64 qemu-system-misc u-boot-qemu \
+  $(apt-cache show qemu-system-riscv >/dev/null 2>&1 && echo qemu-system-riscv) \
   qemu-system-ppc qemu-system-s390x qemu-system-sparc \
   openssh-client
 ```
