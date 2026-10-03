@@ -1,6 +1,6 @@
 ---
 name: anyvm
-version: "1.5.0"
+version: "1.5.1"
 description: "Run, manage, debug, and test/build/run code inside BSD, Illumos, Linux, Android, GNU Hurd, Plan 9, and ReactOS VMs with anyvm + QEMU. Covers FreeBSD, HardenedBSD, OPNsense, GhostBSD, MidnightBSD, NextBSD, OpenBSD, NetBSD, DragonFlyBSD, Solaris, OmniOS, OpenIndiana, Tribblix, Haiku, Ubuntu, Debian, Rocky Linux, AlmaLinux, openEuler, Alpine, BlissOS, GNU Hurd, Plan 9 (9front), and ReactOS across x86_64, i386, aarch64, riscv64, sparc64, powerpc64, s390x, and loongarch64. Use when the user is writing code that must compile, run, or be tested on one of these operating systems or CPU architectures, needs to reproduce a platform-specific bug, checks cross-platform or cross-architecture portability, or wants to start, SSH into, port-forward, or share folders with such a VM."
 argument-hint: 'anyvm freebsd, anyvm openbsd debug networking, anyvm start ubuntu vm'
 allowed-tools: Bash, Read, Write, Edit, WebSearch, WebFetch
@@ -29,7 +29,7 @@ metadata:
     - haiku
     - ubuntu
     - debian
-    - rocky
+    - rockylinux
     - almalinux
     - openeuler
     - alpine
@@ -97,7 +97,7 @@ Architecture columns: x86_64 / i386 / aarch64 / riscv64 / powerpc64 / sparc64 / 
 > RISC OS is 32-bit ARM (`armv7`), which is not a column here because it is
 > the only guest that uses it; `--os riscos` resolves to it on its own.
 
-> The `--os` value is one of: `freebsd`, `hardenedbsd`, `opnsense`, `ghostbsd`, `midnightbsd`, `nextbsd`, `openbsd`, `netbsd`, `dragonflybsd`, `solaris`, `omnios`, `openindiana`, `tribblix`, `haiku`, `ubuntu`, `debian`, `rocky`, `almalinux`, `openeuler`, `alpine`, `blissos`, `hurd`, `plan9`, `reactos`, `riscos`, `redox`.
+> The `--os` value is one of: `freebsd`, `hardenedbsd`, `opnsense`, `ghostbsd`, `midnightbsd`, `nextbsd`, `openbsd`, `netbsd`, `dragonflybsd`, `solaris`, `omnios`, `openindiana`, `tribblix`, `haiku`, `ubuntu`, `debian`, `rockylinux`, `almalinux`, `openeuler`, `alpine`, `blissos`, `hurd`, `plan9`, `reactos`, `riscos`, `redox`.
 
 ### Special guests (read before using)
 
@@ -217,10 +217,10 @@ python3 anyvm.py --os almalinux
 python3 anyvm.py --os almalinux --release 10 --arch ppc64le
 
 # Rocky Linux (9 / 10; ppc64le on 10 only)
-python3 anyvm.py --os rocky
-python3 anyvm.py --os rocky --release 10 --arch aarch64
-python3 anyvm.py --os rocky --release 10 --arch ppc64le
-python3 anyvm.py --os rocky --release 9 --arch s390x
+python3 anyvm.py --os rockylinux
+python3 anyvm.py --os rockylinux --release 10 --arch aarch64
+python3 anyvm.py --os rockylinux --release 10 --arch ppc64le
+python3 anyvm.py --os rockylinux --release 9 --arch s390x
 
 # Debian (12 = bookworm, 13 = trixie; riscv64 on 13 only)
 python3 anyvm.py --os debian
